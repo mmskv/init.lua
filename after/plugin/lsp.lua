@@ -5,10 +5,6 @@ local lsp = require('lsp-zero').preset({
     suggest_lsp_servers = false,
 })
 
-lsp.ensure_installed({
-    'lua_ls', 'pyright'
-})
-
 lsp.nvim_workspace()
 
 local cmp = require('cmp')
@@ -55,8 +51,8 @@ local null_ls = require('null-ls')
 null_ls.setup({
     root_dir = require("null-ls.utils").root_pattern("pyproject.toml"),
     sources = {
-        null_ls.builtins.diagnostics.codespell,
-        null_ls.builtins.diagnostics.pylint,
+        -- null_ls.builtins.diagnostics.codespell,
+        -- null_ls.builtins.diagnostics.pylint,
         null_ls.builtins.formatting.black,
         null_ls.builtins.formatting.isort,
     },

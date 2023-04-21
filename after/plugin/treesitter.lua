@@ -1,5 +1,5 @@
 require 'nvim-treesitter.configs'.setup {
-    ensure_installed = { "help", "python", "latex", "terraform", "fish", "yaml", "jsonc", "c", "cpp", "lua", "vim", "help" },
+    ensure_installed = { "help", "python", "latex", "terraform", "fish", "yaml", "jsonc", "c", "cpp", "lua", "vim", "help", "diff" },
 
     sync_install = false,
     auto_install = true,
