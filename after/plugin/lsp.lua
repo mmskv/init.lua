@@ -5,29 +5,52 @@ local lsp = require('lsp-zero').preset({
     suggest_lsp_servers = false,
 })
 
-lsp.nvim_workspace()
+require('mason').setup({})
+require('mason-lspconfig').setup({
+    ensure_installed = { "rust_analyzer", "clangd" },
+    handlers = {
+        lsp.default_setup,
+
+        rust_analyzer = function()
+            require('lspconfig').rust_analyzer.setup({
+                settings = {
+                    ["rust-analyzer"] = {
+                        checkOnSave = {
+                            allTargets = false,
+                        },
+                        -- linkedProjects = { "/home/suck/self/stm32/master/stm/Cargo.toml" }
+                    },
+                }
+
+            })
+        end,
+    },
+})
 
 local cmp = require('cmp')
+local cmp_action = require('lsp-zero').cmp_action()
+local cmp_format = require('lsp-zero').cmp_format({ details = true })
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
-local cmp_mappings = lsp.defaults.cmp_mappings({
+
+require('luasnip.loaders.from_vscode').lazy_load()
+
+cmp.setup({
+    sources = {
+        { name = 'nvim_lsp' },
+        { name = 'luasnip' },
+    },
+    mapping = cmp.mapping.preset.insert({
         ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
         ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
         ['<C-o>'] = cmp.mapping.complete(),
-})
 
-lsp.setup_nvim_cmp({
-    mapping = cmp_mappings
+    }),
+    formatting = cmp_format,
 })
 
 lsp.set_preferences({
     suggest_lsp_servers = false,
-    sign_icons = {
-        error = 'E',
-        warn = 'W',
-        hint = 'H',
-        info = 'I'
-    }
 })
 
 lsp.on_attach(function(client, bufnr)
@@ -45,23 +68,27 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
 end)
 
-lsp.setup()
+local lua_opts = lsp.nvim_lua_ls()
+require('lspconfig').lua_ls.setup(lua_opts)
 
-local null_ls = require('null-ls')
-null_ls.setup({
-    root_dir = require("null-ls.utils").root_pattern("pyproject.toml"),
-    sources = {
-        -- null_ls.builtins.diagnostics.codespell,
-        -- null_ls.builtins.diagnostics.pylint,
-        null_ls.builtins.formatting.black,
-        null_ls.builtins.formatting.isort,
-        null_ls.builtins.formatting.prettier.with({
-            filetypes = { "json", "yaml.ansible", "yaml", "markdown" },
-        }),
-    },
-})
+lsp.setup()
 
 vim.diagnostic.config({
     virtual_text = true,
     sort_severity = true
 })
+
+require('illuminate').configure({
+    providers = {
+        'lsp',
+        'treesitter',
+    },
+    delay = 50,
+    under_cursor = false,
+})
+
+require('lspconfig').gopls.setup {
+    on_attach = function(client)
+        require('illuminate').on_attach(client)
+    end,
+}
