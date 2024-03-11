@@ -1,6 +1,10 @@
 require('refactoring').setup({})
 
-vim.api.nvim_set_keymap("v", "<leader>re", [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function')<CR>]], { noremap = true, silent = true, expr = false })
-vim.api.nvim_set_keymap("v", "<leader>rf", [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Function To File')<CR>]], { noremap = true, silent = true, expr = false })
-vim.api.nvim_set_keymap("v", "<leader>rv", [[ <Esc><Cmd>lua require('refactoring').refactor('Extract Variable')<CR>]], { noremap = true, silent = true, expr = false })
-vim.api.nvim_set_keymap("v", "<leader>ri", [[ <Esc><Cmd>lua require('refactoring').refactor('Inline Variable')<CR>]], { noremap = true, silent = true, expr = false })
+vim.keymap.set("x", "<leader>re", function() require('refactoring').refactor('Extract Function') end)
+vim.keymap.set("x", "<leader>rf", function() require('refactoring').refactor('Extract Function To File') end)
+vim.keymap.set("x", "<leader>rv", function() require('refactoring').refactor('Extract Variable') end)
+vim.keymap.set("n", "<leader>rI", function() require('refactoring').refactor('Inline Function') end)
+vim.keymap.set({ "n", "x" }, "<leader>ri", function() require('refactoring').refactor('Inline Variable') end)
+
+vim.keymap.set("n", "<leader>rb", function() require('refactoring').refactor('Extract Block') end)
+vim.keymap.set("n", "<leader>rbf", function() require('refactoring').refactor('Extract Block To File') end)

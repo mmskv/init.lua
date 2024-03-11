@@ -18,6 +18,12 @@ autocmd({ "VimEnter" }, {
     command = 'if expand("%") == "" | e . | endif',
 })
 
+autocmd({ "VimEnter" }, {
+    group = mmskv,
+    pattern = "*",
+    command = 'lcd %:p:h', -- set cwd to opened path
+})
+
 local yank_group = augroup('HighlightYank', {})
 
 autocmd('TextYankPost', {
