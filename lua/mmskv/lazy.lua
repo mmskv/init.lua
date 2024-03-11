@@ -94,7 +94,11 @@ require("lazy").setup({
     { 'nvim-treesitter/nvim-treesitter',         build = ':TSUpdate' },
     { 'nvim-treesitter/nvim-treesitter-context', build = ':TSUpdate' },
 
-    'theprimeagen/harpoon',
+    {
+        'theprimeagen/harpoon',
+        branch = 'harpoon2',
+    },
+
     'mbbill/undotree',
     'tpope/vim-fugitive',
 
