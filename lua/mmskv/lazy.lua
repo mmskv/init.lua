@@ -75,7 +75,7 @@ require("lazy").setup({
             {
                 "<leader>f",
                 function()
-                    require("conform").format({ async = true, lsp_fallback = true })
+                    require("conform").format({ async = true, lsp_fallback = "always" })
                 end,
                 mode = "",
                 desc = "Format buffer",
@@ -87,7 +87,7 @@ require("lazy").setup({
                 python = { "isort", "black" },
                 javascript = { { "prettierd", "prettier" } },
             },
-            format_on_save = { timeout_ms = 500, lsp_fallback = true },
+            format_on_save = { timeout_ms = 500, lsp_fallback = "always" },
         },
     },
 
