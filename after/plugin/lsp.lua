@@ -18,7 +18,6 @@ require('mason-lspconfig').setup({
                         checkOnSave = {
                             allTargets = false,
                         },
-                        -- linkedProjects = { "/home/suck/self/stm32/master/stm/Cargo.toml" }
                     },
                 }
 

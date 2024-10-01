@@ -3,6 +3,14 @@ require("lazy").setup({
     "rafamadriz/friendly-snippets",
 
     {
+        "lervag/vimtex",
+        lazy = true, -- we don't want to lazy load VimTeX
+        init = function()
+            vim.g.vimtex_view_method = 'zathura'
+        end
+    },
+
+    {
         "L3MON4D3/LuaSnip",
         build = "make install_jsregexp"
     },
@@ -86,6 +94,7 @@ require("lazy").setup({
                 ["_"] = { "trim_whitespace" },
                 python = { "isort", "black" },
                 javascript = { { "prettierd", "prettier" } },
+                markdown = { "markdownlint" },
             },
             format_on_save = { timeout_ms = 500, lsp_fallback = "always" },
         },
