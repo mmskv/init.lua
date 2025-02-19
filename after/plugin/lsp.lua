@@ -1,84 +1,112 @@
-local lsp = require('lsp-zero').preset({
-    name = 'minimal',
-    set_lsp_keymaps = true,
-    manage_nvim_cmp = true,
-    suggest_lsp_servers = false,
+local lspconfig = require('lspconfig')
+
+lspconfig.lua_ls.setup({
+    on_init = function(client)
+        client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
+            runtime = {
+                version = 'LuaJIT'
+            },
+            workspace = {
+                checkThirdParty = false,
+                library = {
+                    vim.env.VIMRUNTIME
+                }
+            }
+        })
+    end,
+    settings = {
+        Lua = {}
+    }
 })
 
-require('mason').setup({})
-require('mason-lspconfig').setup({
-    ensure_installed = { "rust_analyzer", "clangd" },
-    handlers = {
-        lsp.default_setup,
-
-        rust_analyzer = function()
-            require('lspconfig').rust_analyzer.setup({
-                settings = {
-                    ["rust-analyzer"] = {
-                        checkOnSave = {
-                            allTargets = false,
-                        },
-                    },
-                }
-
-            })
-        end,
+lspconfig.ts_ls.setup({
+    settings = {
+        typescript = {
+            format = {
+                indentSize = 2,
+                tabSize = 2,
+            },
+        },
+        javascript = {
+            format = {
+                indentSize = 2,
+                tabSize = 2,
+            },
+        },
     },
 })
 
-local cmp = require('cmp')
-local cmp_action = require('lsp-zero').cmp_action()
-local cmp_format = require('lsp-zero').cmp_format({ details = true })
-local cmp_select = { behavior = cmp.SelectBehavior.Select }
+lspconfig.nixd.setup({
+    settings = {
+        nixd = {
+            formatting = {
+                command = { "alejandra" },
+            },
+            options = {
+                nixos = {
+                    expr = '(builtins.getFlake \"/home/suck/dotfiles\").nixosConfigurations.Wintermute.options',
+                },
+                home_manager = {
+                    expr =
+                    '(builtins.getFlake \"/home/suck/dotfiles\").nixosConfigurations.Wintermute.options.home-manager.users.type.getSubOptions []',
+                },
+            },
+        },
+    }
+})
+
+lspconfig.rust_analyzer.setup({
+    settings = {
+        ["rust-analyzer"] = {
+            checkOnSave = {
+                allTargets = false,
+            },
+        }
+    }
+})
+
+lspconfig.clangd.setup({})
+lspconfig.pyright.setup({})
 
 require('luasnip.loaders.from_vscode').lazy_load()
+
+local cmp = require('cmp')
 
 cmp.setup({
     sources = {
         { name = 'nvim_lsp' },
         { name = 'luasnip' },
     },
+    snippet = {
+        expand = function(args)
+            vim.snippet.expand(args.body)
+        end,
+    },
     mapping = cmp.mapping.preset.insert({
-        ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-        ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+        ['<C-p>'] = cmp.mapping.select_prev_item(),
+        ['<C-n>'] = cmp.mapping.select_next_item(),
         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-        ['<C-o>'] = cmp.mapping.complete(),
-
-        ['<C-g>'] = cmp_action.luasnip_jump_forward(),
-        ['<C-b>'] = cmp_action.luasnip_jump_backward(),
     }),
-    formatting = cmp_format,
 })
 
-lsp.set_preferences({
-    suggest_lsp_servers = false,
-})
+vim.api.nvim_create_autocmd('LspAttach', {
+    callback = function(event)
+        local opts = { buffer = event.buf }
 
-lsp.on_attach(function(client, bufnr)
-    local opts = { buffer = bufnr, remap = false }
-
-    vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
-    vim.keymap.set("n", "gD", function() vim.lsp.buf.declaration() end, opts)
-    vim.keymap.set("n", "gi", function() vim.lsp.buf.implementation() end, opts)
-    vim.keymap.set("n", "gr", function() vim.lsp.buf.references() end, opts)
-    vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
-    vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
-    vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
-    vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
-    vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
-    vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
-    vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
-    vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
-end)
-
-local lua_opts = lsp.nvim_lua_ls()
-require('lspconfig').lua_ls.setup(lua_opts)
-
-lsp.setup()
-
-vim.diagnostic.config({
-    virtual_text = true,
-    sort_severity = true
+        vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+        vim.keymap.set("n", "gD", function() vim.lsp.buf.declaration() end, opts)
+        vim.keymap.set("n", "gi", function() vim.lsp.buf.implementation() end, opts)
+        vim.keymap.set("n", "gr", function() vim.lsp.buf.references() end, opts)
+        vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
+        vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
+        vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
+        vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
+        vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+        vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
+        vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
+        vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+        vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+    end,
 })
 
 require('illuminate').configure({
@@ -89,9 +117,3 @@ require('illuminate').configure({
     delay = 50,
     under_cursor = false,
 })
-
-require('lspconfig').gopls.setup {
-    on_attach = function(client)
-        require('illuminate').on_attach(client)
-    end,
-}

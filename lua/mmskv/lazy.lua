@@ -1,18 +1,41 @@
 require("lazy").setup({
-    'nvim-telescope/telescope.nvim',
-    "rafamadriz/friendly-snippets",
+    { 'nvim-treesitter/nvim-treesitter',         build = ':TSUpdate' },
+    { 'nvim-treesitter/nvim-treesitter-context', build = ':TSUpdate' },
 
-    {
-        "lervag/vimtex",
-        lazy = true, -- we don't want to lazy load VimTeX
-        init = function()
-            vim.g.vimtex_view_method = 'zathura'
-        end
-    },
+    'neovim/nvim-lspconfig',
+    'hrsh7th/nvim-cmp',
+    'hrsh7th/cmp-nvim-lsp',
+    'hrsh7th/cmp-nvim-lua',
+    'hrsh7th/cmp-path',
 
     {
         "L3MON4D3/LuaSnip",
+        version = "v2.*",
         build = "make install_jsregexp"
+    },
+    "rafamadriz/friendly-snippets",
+
+    "stevearc/conform.nvim",
+
+    {
+        "zbirenbaum/copilot.lua",
+        cmd = "Copilot",
+        keys = { { "<leader>cop", "<cmd>Copilot enable<CR>" }, },
+        config = function()
+            require("copilot").setup({
+                suggestion = {
+                    auto_trigger = true,
+                    keymap = {
+                        accept = "<C-l>",
+                        accept_word = false,
+                        accept_line = false,
+                        next = "<C-j>",
+                        prev = "<C-k>",
+                        dismiss = "<C-h>",
+                    }
+                }
+            })
+        end,
     },
 
     {
@@ -29,6 +52,9 @@ require("lazy").setup({
                 colors = {
                     theme = {
                         all = {
+                            syn = {
+                                identifier = "#b98d7b",
+                            },
                             ui = {
                                 bg_gutter = "none"
                             },
@@ -46,7 +72,6 @@ require("lazy").setup({
                     local palette = colors.palette
                     return {
                         NormalFloat = { bg = "none" },
-                        FloatBorder = { bg = "none" },
                         FloatTitle = { bg = "none" },
 
                         NormalDark = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m3 },
@@ -62,53 +87,36 @@ require("lazy").setup({
                         TelescopeResultsBorder = { fg = theme.ui.bg_m1, bg = theme.ui.bg_m1 },
                         TelescopePreviewNormal = { bg = theme.ui.bg_dim },
                         TelescopePreviewBorder = { bg = theme.ui.bg_dim, fg = theme.ui.bg_dim },
-
-                        -- Pmenu = { fg = theme.ui.shade0, bg = theme.ui.bg_p1 }, -- add `blend = vim.o.pumblend` to enable transparency
-                        -- PmenuSel = { fg = "NONE", bg = theme.ui.bg_p2 },
-                        -- PmenuSbar = { bg = theme.ui.bg_m1 },
-                        -- PmenuThumb = { bg = theme.ui.bg_p2 },
                     }
                 end,
             })
 
-            vim.cmd('colorscheme kanagawa')
+            vim.cmd('colorscheme kanagawa-dragon')
         end
     },
 
-    {
-        "stevearc/conform.nvim",
-        event = { "BufWritePre" },
-        cmd = { "ConformInfo" },
-        keys = {
-            {
-                "<leader>f",
-                function()
-                    require("conform").format({ async = true, lsp_fallback = "always" })
-                end,
-                mode = "",
-                desc = "Format buffer",
-            },
-        },
-        opts = {
-            formatters_by_ft = {
-                ["_"] = { "trim_whitespace" },
-                python = { "isort", "black" },
-                javascript = { { "prettierd", "prettier" } },
-                markdown = { "markdownlint" },
-            },
-            format_on_save = { timeout_ms = 500, lsp_fallback = "always" },
-        },
-    },
-
-    { 'nvim-treesitter/nvim-treesitter',         build = ':TSUpdate' },
-    { 'nvim-treesitter/nvim-treesitter-context', build = ':TSUpdate' },
-
-    {
-        'theprimeagen/harpoon',
-        branch = 'harpoon2',
-    },
-
     'mbbill/undotree',
+    'nvim-telescope/telescope.nvim',
+    "theprimeagen/refactoring.nvim",
+    {
+        "ThePrimeagen/harpoon",
+        branch = "harpoon2",
+        dependencies = { "nvim-lua/plenary.nvim" }
+    },
+    {
+        "folke/trouble.nvim",
+        dependencies = { "nvim-tree/nvim-web-devicons" },
+        cmd = "Trouble",
+    },
+
+    {
+        "lervag/vimtex",
+        lazy = true, -- we don't want to lazy load VimTeX
+        init = function()
+            vim.g.vimtex_view_method = 'zathura'
+        end
+    },
+    'norcalli/nvim-colorizer.lua',
     'tpope/vim-fugitive',
 
     {
@@ -116,38 +124,6 @@ require("lazy").setup({
         dependencies = 'nvim-lua/plenary.nvim',
     },
 
-    {
-        'VonHeikemen/lsp-zero.nvim',
-        branch = 'v3.x',
-        dependencies = {
-            -- LSP Support
-            { 'neovim/nvim-lspconfig' },
-            { 'williamboman/mason.nvim' },
-            { 'williamboman/mason-lspconfig.nvim' },
-
-            -- Autocompletion
-            { 'hrsh7th/nvim-cmp' },
-            { 'hrsh7th/cmp-buffer' },
-            { 'hrsh7th/cmp-path' },
-            { 'saadparwaiz1/cmp_luasnip' },
-            { 'hrsh7th/cmp-nvim-lsp' },
-            { 'hrsh7th/cmp-nvim-lua' },
-
-            -- Snippets
-            { 'L3MON4D3/LuaSnip' },
-            { 'rafamadriz/friendly-snippets' },
-        }
-    },
-
     "rrethy/vim-illuminate",
-    "theprimeagen/refactoring.nvim",
-
-    {
-        "folke/trouble.nvim",
-        dependencies = { "nvim-tree/nvim-web-devicons" },
-    },
-
-    "folke/zen-mode.nvim",
     "eandrju/cellular-automaton.nvim",
-    'norcalli/nvim-colorizer.lua',
 })
