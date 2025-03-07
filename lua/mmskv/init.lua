@@ -1,6 +1,7 @@
 require("mmskv.set")
 require("mmskv.remap")
 require("mmskv.autoresize")
+require("mmskv.lastplace")
 
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
