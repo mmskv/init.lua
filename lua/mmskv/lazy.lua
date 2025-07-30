@@ -110,6 +110,12 @@ require("lazy").setup({
     },
 
     {
+        'mrcjkb/haskell-tools.nvim',
+        version = '^4',
+        lazy = false,
+    },
+
+    {
         "lervag/vimtex",
         lazy = true, -- we don't want to lazy load VimTeX
         init = function()
