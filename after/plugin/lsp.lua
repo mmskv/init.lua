@@ -19,22 +19,23 @@ lspconfig.lua_ls.setup({
     }
 })
 
-lspconfig.ts_ls.setup({
+lspconfig.vtsls.setup({
     settings = {
-        typescript = {
-            format = {
-                indentSize = 2,
-                tabSize = 2,
+        vtsls = {
+            autoUseWorkspaceTsdk = true,
+            experimental = {
+                completion = {
+                    enableServerSideFuzzyMatch = true,
+                },
             },
-        },
-        javascript = {
-            format = {
-                indentSize = 2,
-                tabSize = 2,
-            },
+            typescript = {
+                tsserver = { maxTsServerMemory = 16000 },
+            }
         },
     },
 })
+
+lspconfig.tailwindcss.setup({})
 
 lspconfig.nixd.setup({
     settings = {

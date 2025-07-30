@@ -23,6 +23,7 @@ require("lazy").setup({
         keys = { { "<leader>cop", "<cmd>Copilot enable<CR>" }, },
         config = function()
             require("copilot").setup({
+                filetypes = { yaml = true },
                 suggestion = {
                     auto_trigger = true,
                     keymap = {
