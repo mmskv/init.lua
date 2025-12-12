@@ -1,6 +1,5 @@
-local lspconfig = require('lspconfig')
-
-lspconfig.lua_ls.setup({
+vim.lsp.config['lua_ls'] = {
+    cmd = { 'lua-language-server' },
     on_init = function(client)
         client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
             runtime = {
@@ -17,9 +16,10 @@ lspconfig.lua_ls.setup({
     settings = {
         Lua = {}
     }
-})
+}
 
-lspconfig.vtsls.setup({
+vim.lsp.config['vtsls'] = {
+    cmd = { 'vtsls', '--stdio' },
     settings = {
         vtsls = {
             autoUseWorkspaceTsdk = true,
@@ -33,11 +33,14 @@ lspconfig.vtsls.setup({
             }
         },
     },
-})
+}
 
-lspconfig.tailwindcss.setup({})
+vim.lsp.config['tailwindcss'] = {
+    cmd = { 'tailwindcss-language-server', '--stdio' },
+}
 
-lspconfig.nixd.setup({
+vim.lsp.config['nixd'] = {
+    cmd = { 'nixd' },
     settings = {
         nixd = {
             formatting = {
@@ -54,9 +57,10 @@ lspconfig.nixd.setup({
             },
         },
     }
-})
+}
 
-lspconfig.rust_analyzer.setup({
+vim.lsp.config['rust_analyzer'] = {
+    cmd = { 'rust-analyzer' },
     settings = {
         ["rust-analyzer"] = {
             checkOnSave = {
@@ -64,10 +68,28 @@ lspconfig.rust_analyzer.setup({
             },
         }
     }
-})
+}
 
-lspconfig.clangd.setup({})
-lspconfig.pyright.setup({})
+vim.lsp.config['clangd'] = {
+    cmd = { 'clangd' },
+}
+
+vim.lsp.config['pyright'] = {
+    cmd = { 'pyright-langserver', '--stdio' },
+}
+
+vim.lsp.config['gopls'] = {
+    cmd = { 'gopls' },
+}
+
+vim.lsp.enable('lua_ls')
+vim.lsp.enable('vtsls')
+vim.lsp.enable('tailwindcss')
+vim.lsp.enable('nixd')
+vim.lsp.enable('rust_analyzer')
+vim.lsp.enable('clangd')
+vim.lsp.enable('pyright')
+vim.lsp.enable('gopls')
 
 require('luasnip.loaders.from_vscode').lazy_load()
 
