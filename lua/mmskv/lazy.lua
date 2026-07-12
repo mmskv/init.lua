@@ -3,17 +3,6 @@ require("lazy").setup({
     { 'nvim-treesitter/nvim-treesitter-context', build = ':TSUpdate' },
 
     'neovim/nvim-lspconfig',
-    'hrsh7th/nvim-cmp',
-    'hrsh7th/cmp-nvim-lsp',
-    'hrsh7th/cmp-nvim-lua',
-    'hrsh7th/cmp-path',
-
-    {
-        "L3MON4D3/LuaSnip",
-        version = "v2.*",
-        build = "make install_jsregexp"
-    },
-    "rafamadriz/friendly-snippets",
 
     "stevearc/conform.nvim",
 
@@ -37,6 +26,9 @@ require("lazy").setup({
                 }
             })
         end,
+    },
+
+    {
         'MeanderingProgrammer/render-markdown.nvim',
         dependencies = { 'nvim-treesitter/nvim-treesitter' },
         ft = { 'markdown' },
@@ -98,7 +90,6 @@ require("lazy").setup({
         end
     },
 
-    'mbbill/undotree',
     'nvim-telescope/telescope.nvim',
     {
         "ThePrimeagen/harpoon",
@@ -124,13 +115,10 @@ require("lazy").setup({
             vim.g.vimtex_view_method = 'zathura'
         end
     },
-    'norcalli/nvim-colorizer.lua',
+    { 'catgoose/nvim-colorizer.lua', opts = {} },
     'tpope/vim-fugitive',
 
-    {
-        'ruifm/gitlinker.nvim',
-        dependencies = 'nvim-lua/plenary.nvim',
-    },
+    'linrongbin16/gitlinker.nvim',
 
     "rrethy/vim-illuminate",
     "eandrju/cellular-automaton.nvim",
