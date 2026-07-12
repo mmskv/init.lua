@@ -74,8 +74,8 @@ vim.lsp.config['clangd'] = {
     cmd = { 'clangd' },
 }
 
-vim.lsp.config['pyright'] = {
-    cmd = { 'pyright-langserver', '--stdio' },
+vim.lsp.config['basedpyright'] = {
+    cmd = { 'basedpyright-langserver', '--stdio' },
 }
 
 vim.lsp.config['gopls'] = {
@@ -88,7 +88,7 @@ vim.lsp.enable('tailwindcss')
 vim.lsp.enable('nixd')
 vim.lsp.enable('rust_analyzer')
 vim.lsp.enable('clangd')
-vim.lsp.enable('pyright')
+vim.lsp.enable('basedpyright')
 vim.lsp.enable('gopls')
 
 require('luasnip.loaders.from_vscode').lazy_load()

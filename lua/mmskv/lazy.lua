@@ -1,5 +1,5 @@
 require("lazy").setup({
-    { 'nvim-treesitter/nvim-treesitter',         build = ':TSUpdate' },
+    { 'nvim-treesitter/nvim-treesitter',         branch = 'main', build = ':TSUpdate' },
     { 'nvim-treesitter/nvim-treesitter-context', build = ':TSUpdate' },
 
     'neovim/nvim-lspconfig',
@@ -37,6 +37,12 @@ require("lazy").setup({
                 }
             })
         end,
+        'MeanderingProgrammer/render-markdown.nvim',
+        dependencies = { 'nvim-treesitter/nvim-treesitter' },
+        ft = { 'markdown' },
+        opts = {
+            completions = { lsp = { enabled = true } },
+        },
     },
 
     {
@@ -52,12 +58,13 @@ require("lazy").setup({
                 },
                 colors = {
                     theme = {
-                        all = {
+                        dragon = {
                             syn = {
                                 identifier = "#b98d7b",
                             },
                             ui = {
-                                bg_gutter = "none"
+                                bg_gutter = "none",
+                                bg = "none",
                             },
                             diag = {
                                 ok      = "#98BB6C",
@@ -72,11 +79,6 @@ require("lazy").setup({
                     local theme = colors.theme
                     local palette = colors.palette
                     return {
-                        NormalFloat = { bg = "none" },
-                        FloatTitle = { bg = "none" },
-
-                        NormalDark = { fg = theme.ui.fg_dim, bg = theme.ui.bg_m3 },
-
                         LazyNormal = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
                         MasonNormal = { bg = theme.ui.bg_m3, fg = theme.ui.fg_dim },
 
@@ -98,7 +100,6 @@ require("lazy").setup({
 
     'mbbill/undotree',
     'nvim-telescope/telescope.nvim',
-    "theprimeagen/refactoring.nvim",
     {
         "ThePrimeagen/harpoon",
         branch = "harpoon2",
